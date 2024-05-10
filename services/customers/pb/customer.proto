@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option go_package = "github.com/d1agnoze/kitchen/services/customers/pb";
+
+message Customer{
+  int32 id = 1;
+  string name = 2;
+  string phoneNumber = 3;
+  string address = 4;
+}
+
+service CustomerService{
+  rpc GetCustomer(GetCustomerRequest) returns (Customer){}
+}
+
+message GetCustomerRequest{
+  int32 id = 1;
+}
+

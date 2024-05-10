@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/d1agnoze/kitchen/services/common/pb";
+
+message PingResponse {
+  string message = 1;
+}
+
+message MessageDto {
+  string name = 1;
+  SecondDto second = 2;
+}
+
+message SecondDto {
+  int32 count = 1;
+}
+
+message PuckResponse {
+  string result = 1;
+}
+
+service CommonService {
+  rpc Ping(google.protobuf.Empty) returns (PingResponse);
+  rpc Puck(MessageDto) returns (PuckResponse);
+}
