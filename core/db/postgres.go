@@ -6,13 +6,10 @@ import (
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
-
-	"github.com/charmbracelet/log"
 	env "github.com/joho/godotenv"
 )
 
-func Init_PostGres() (*gorm.DB, error) {
+func Init_PostGres() (gorm.Dialector, error) {
 	err := env.Load("../../.env")
 
 	if err != nil {
@@ -20,7 +17,7 @@ func Init_PostGres() (*gorm.DB, error) {
 	}
 
 	dbUser := os.Getenv("DB_USER")
-	dbPass := os.Getenv("DB_PASS")
+	dbPass := os.Getenv("DB_PASSWORD")
 	dbName := os.Getenv("DB_NAME")
 	dbHost := os.Getenv("DB_HOST")
 	dbPort := os.Getenv("DB_PORT")
@@ -29,21 +26,12 @@ func Init_PostGres() (*gorm.DB, error) {
 	dbTimezone := "Asia/Ho_Chi_Minh"
 
 	/* INFO: create dns string */
-	dsn := fmt.Sprintf("host=%v user=%v password=%v dbname=%v port=%v sslmode=%v TimeZone=%v",
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=%s",
 		dbHost, dbUser, dbPass, dbName, dbPort, dbSll, dbTimezone)
 
-	/* INFO: initialize charm logger */
-	charmLogger := logger.New(log.New(os.Stdout), logger.Config{})
+	dia := postgres.Open(dsn)
 
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
-		Logger: charmLogger,
-	})
-
-	if err != nil {
-		return nil, fmt.Errorf("failed to connect to database: %v", err.Error())
-	}
-
-	return db, nil
+	return dia, nil
 }
 
 // Define your database connect function below
