@@ -8,11 +8,13 @@ message User {
   string email = 3;
   string passwordHash = 4;
   string address = 5;
+  string phoneNumber = 6;
 }
 
 service AuthService {
   rpc GetUser(GetUserRequest) returns (User) {}
   rpc Login(LoginRequest) returns (LoginResponse) {}
+  rpc Signup(CreateUserRequest) returns (CreateUserResponse) {}
 }
 
 message LoginRequest {
@@ -32,4 +34,17 @@ message GetUserResponse {
   string name = 1;
   string email = 2;
   string address = 3;
+  string phoneNumber = 4;
+}
+
+message CreateUserRequest {
+  string name = 1;
+  string email = 2;
+  string passwordHash = 3;
+  string address = 4;
+  string phoneNumber = 5;
+}
+
+message CreateUserResponse {
+  int32 id = 1;
 }
